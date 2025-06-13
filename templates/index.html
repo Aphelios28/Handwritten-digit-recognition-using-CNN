@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Nhận diện ảnh bằng CNN</title>
+</head>
+<body>
+  <h2>Chọn ảnh để nhận diện</h2>
+  <form method="POST" action="/predict" enctype="multipart/form-data">
+    <input type="file" name="image" accept="image/*" required>
+    <br><br>
+    <button type="submit">Nhận diện</button>
+  </form>
+  {% if img_path %}
+    <h3>Ảnh đã chọn:</h3>
+    <img src="{{ img_path }}" style="max-width:200px;">
+  {% endif %}
+
+  {% if result is not none and confidence is not none %}
+    <h3>Kết quả dự đoán: <span style="color:blue">{{ result }}</span></h3>
+{% endif %}
+
+</body>
+</html>
