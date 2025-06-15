@@ -3,22 +3,109 @@
 <head>
   <meta charset="UTF-8">
   <title>Nhận diện ảnh bằng CNN</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f4f8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px;
+    }
+
+    h2 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    form {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .custom-file-upload {
+      display: inline-block;
+      padding: 10px 20px;
+      cursor: pointer;
+      background-color: #6c63ff;
+      color: white;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+      margin-bottom: 20px;
+    }
+
+    .custom-file-upload:hover {
+      background-color: #4b44d1;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .result-section {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    img {
+      max-width: 200px;
+      border-radius: 8px;
+      margin-top: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .prediction {
+      color: #007bff;
+      font-size: 20px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
   <h2>Chọn ảnh để nhận diện</h2>
   <form method="POST" action="/predict" enctype="multipart/form-data">
-    <input type="file" name="image" accept="image/*" required>
-    <br><br>
+    <label for="file-upload" class="custom-file-upload">
+      📁 Chọn ảnh từ máy
+    </label>
+    <input id="file-upload" type="file" name="image" accept="image/*" required>
+
     <button type="submit">Nhận diện</button>
   </form>
+
   {% if img_path %}
-    <h3>Ảnh đã chọn:</h3>
-    <img src="{{ img_path }}" style="max-width:200px;">
+    <div class="result-section">
+      <h3>Ảnh đã chọn:</h3>
+      <img src="{{ img_path }}" alt="Ảnh đã chọn">
+    </div>
   {% endif %}
 
   {% if result is not none and confidence is not none %}
-    <h3>Kết quả dự đoán: <span style="color:blue">{{ result }}</span></h3>
-{% endif %}
-
+    <div class="result-section">
+      <h3>Kết quả dự đoán:</h3>
+      <p class="prediction">{{ result }}</p>
+      <p>Độ chính xác: {{ confidence }}%</p>
+    </div>
+  {% endif %}
 </body>
 </html>
