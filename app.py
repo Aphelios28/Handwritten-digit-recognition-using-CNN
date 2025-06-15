@@ -40,8 +40,9 @@ def predict():
 
     prediction = model.predict(img)
     result = int(np.argmax(prediction))
+    confidence_score = float(np.max(prediction))*100
 
-    return render_template('index.html', result=result, img_path=file_path)
+    return render_template('index.html', result=result, confidence = round(confidence_score, 2), img_path=file_path)
 
 if __name__ == '__main__':
     app.run(debug=True)
