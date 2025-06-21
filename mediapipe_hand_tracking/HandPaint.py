@@ -16,8 +16,8 @@ class handPaint:
         finger_index_14 = hand_landmark.landmark[14]
         finger_index_20 = hand_landmark.landmark[20]
         finger_index_17 = hand_landmark.landmark[17]
-        return finger_index_8.y > finger_index_6 and finger_index_12 < finger_index_10 and \
-               finger_index_16 < finger_index_14 and finger_index_20 < finger_index_17
+        return finger_index_8.y < finger_index_6.y and finger_index_12.y > finger_index_10.y and \
+               finger_index_16.y > finger_index_14.y and finger_index_20.y > finger_index_17.y
     def check_hold_hand(self, hand_landmark):
         finger_index_8 = hand_landmark.landmark[8]
         finger_index_5 = hand_landmark.landmark[5]
@@ -27,5 +27,5 @@ class handPaint:
         finger_index_13 = hand_landmark.landmark[13]
         finger_index_20 = hand_landmark.landmark[20]
         finger_index_17 = hand_landmark.landmark[17]
-        return finger_index_8.y < finger_index_5 and finger_index_12 < finger_index_9 and \
-            finger_index_16 < finger_index_13 and finger_index_20 < finger_index_17
+        return finger_index_8.y > finger_index_5.y and finger_index_12.y > finger_index_9.y and \
+            finger_index_16.y > finger_index_13.y and finger_index_20.y > finger_index_17.y
