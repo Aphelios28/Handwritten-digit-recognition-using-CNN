@@ -1,8 +1,8 @@
 import argparse
 import time
 import cv2
-from mediapipe.HandDetector import handDetector
-from mediapipe.HandPaint import handPaint
+from mediapipe_hand_tracking.HandDetector import handDetector
+from mediapipe_hand_tracking.HandPaint import handPaint
 
 def get_args():
     parser = argparse.ArgumentParser()
@@ -24,24 +24,30 @@ def get_args():
     return args
 def main():
     arg = get_args()
-
+    weight_cam, height_cam = 640, 480
     cap = cv2.VideoCapture(0)
     detector = handDetector()
-
-    weight_cam, height_cam = 640, 480
+    painter = handPaint(weight_cam, height_cam)
 
     cap.set(3, weight_cam)
     cap.set(3, height_cam)
 
-    cTime, pTime = 0, 0
     while True:
         success, image = cap.read()
         image = cv2.flip(image, 1)
         img = detector.findHands(image)
-        cTime = time.time()
-        fps = 1 / (cTime - pTime)
-        pTime = cTime
-        cv2.putText(img, str(int(fps)), (10, 70), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 255), 3)
+        resutls = detector.hands.process(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+
+        if resutls.multi_hand_landmarks:
+            status = f"You are "
+            for hand_landmarks in resutls.multi_hand_landmarks:
+                if painter.check_hold_hand(hand_landmarks):
+                    status += "hold your hand"
+                elif painter.check_index_finger_up(hand_landmarks):
+                    status += "pointing with your index finger"
+                else:
+                    status += "doing nothing"
+            cv2.putText(img, status, (10, 70), cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 255), 2)
         cv2.imshow("Image", image)
         k = cv2.waitKey(1) & 0xff
         if k == ord('q'):
