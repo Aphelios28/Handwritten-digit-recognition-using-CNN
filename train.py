@@ -2,7 +2,7 @@ import torch
 from torch import nn
 from timeit import default_timer as timer
 from torch.utils.data import DataLoader
-from src.datasets import Fashion
+from src.datasets import NumberMNIST
 from src.train_using_pytorch import CNN
 from helper_functions import accuracy_fn, print_train_time
 
@@ -10,7 +10,7 @@ def train (train_data_loader, test_data_loader):
     torch.manual_seed(42)
     time_train_start_model = timer()
     epochs = 3
-    model = CNN(input_shape=784, hidden_units=10, output_shape=len(Fashion.class_name()))
+    model = CNN(input_shape=784, hidden_units=10, output_shape=len(NumberMNIST.class_name()))
     model.to('cpu')
     loss_fn = nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(params=model.parameters(), lr=0.1)
@@ -42,8 +42,9 @@ def train (train_data_loader, test_data_loader):
 
 if __name__ == '__main__':
     BATCH_SIZE = 32
-    train_data_loader = DataLoader(Fashion.load_data_train(), batch_size=BATCH_SIZE, shuffle=True)
-    test_data_loader = DataLoader(Fashion.load_data_test(), batch_size=BATCH_SIZE, shuffle=False)
+    numberMnist = NumberMNIST()
+    train_data_loader = DataLoader(numberMnist.load_data_train(), batch_size=BATCH_SIZE, shuffle=True)
+    test_data_loader = DataLoader(numberMnist.load_data_test(), batch_size=BATCH_SIZE, shuffle=False)
     train(train_data_loader, test_data_loader)
 
 
